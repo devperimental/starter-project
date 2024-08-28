@@ -9,13 +9,14 @@ on:
       - main
 env:
   src-dir: ./src/code
+  app-service-name: simple-service-2024
 jobs:
   build:
     runs-on: ubuntu-latest
 
     environment:
       name: 'Production'
-#      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -35,22 +36,22 @@ jobs:
       - name: dotnet publish
         run: dotnet publish ${{ env.src-dir }}/SimpleApi -c Release -o ${{env.DOTNET_ROOT}}/my-app
 
-      #- name: Upload artifact for deployment job
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: .net-app
-      #    path: ${{env.DOTNET_ROOT}}/my-app
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/my-app
 
-      #- name: Download artifact from build job
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: .net-app
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
 
-      #- name: Deploy to Azure Web App
-      #  id: deploy-to-webapp
-      #  uses: azure/webapps-deploy@v2
-      #  with:
-      #    app-name: 'management-ui-client-dev'
-      #    slot-name: 'Production'
-      #    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_37BF02E32F00428CB3755A3D6F77DB40 }}
-      #    package: .
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{env.app-service-name}}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
