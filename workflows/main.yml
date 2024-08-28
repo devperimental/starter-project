@@ -1,38 +1,56 @@
-name: Main Pipeline
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: deploy simple service
+
 on:
   push:
     branches:
-      - 'main'
+      - main
 env:
-  nuget-username: chrisxpr
   src-dir: ./src/code
-  cdk-dir: ./cdk
-  coverage-threshold: 0
-  repo-organisation: architected
-  team-pat: ${{ secrets.NUGET_PAT}}
-  cdk_action: deploy
-  aws_region: ap-southeast-2
-  service_key: management-ui-client
-  ecr_repository_name: management-ui-client
-  target_environment: dev
-concurrency: main-${{ github.ref}}
 jobs:
-  dotnetBuild:
-    name: Build and Test
+  build:
     runs-on: ubuntu-latest
-    environment: dev
-    timeout-minutes: 20
-    steps:
-      - name: Checkout action
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
 
-      - name: buildAndTest
-        uses: devperimental/composite-action-library/dotnet-build-and-test@v2
+    environment:
+      name: 'Production'
+#      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
         with:
-          nuget-username: ${{ env.nuget-username }}
-          src-dir: ${{ env.src-dir }}
-          coverage-threshold: ${{ env.coverage-threshold }}
-          repo-organisation: ${{ env.repo-organisation }}
-          team-pat: ${{ env.team-pat }}
+          dotnet-version: '8.0.x'
+          include-prerelease: true
+
+      - name: Install dependancies
+        run: dotnet restore ${{env.src-dir}}
+
+      - name: Build with dotnet
+        run: dotnet build ${{ env.src-dir }} --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish ${{ env.src-dir }}/SimpleApi -c Release -o ${{env.DOTNET_ROOT}}/my-app
+
+      #- name: Upload artifact for deployment job
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: .net-app
+      #    path: ${{env.DOTNET_ROOT}}/my-app
+
+      #- name: Download artifact from build job
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: .net-app
+
+      #- name: Deploy to Azure Web App
+      #  id: deploy-to-webapp
+      #  uses: azure/webapps-deploy@v2
+      #  with:
+      #    app-name: 'management-ui-client-dev'
+      #    slot-name: 'Production'
+      #    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_37BF02E32F00428CB3755A3D6F77DB40 }}
+      #    package: .
