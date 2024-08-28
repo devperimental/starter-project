@@ -1,0 +1,38 @@
+name: Main Pipeline
+on:
+  push:
+    branches:
+      - 'main'
+env:
+  nuget-username: chrisxpr
+  src-dir: ./src/code
+  cdk-dir: ./cdk
+  coverage-threshold: 0
+  repo-organisation: architected
+  team-pat: ${{ secrets.NUGET_PAT}}
+  cdk_action: deploy
+  aws_region: ap-southeast-2
+  service_key: management-ui-client
+  ecr_repository_name: management-ui-client
+  target_environment: dev
+concurrency: main-${{ github.ref}}
+jobs:
+  dotnetBuild:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    environment: dev
+    timeout-minutes: 20
+    steps:
+      - name: Checkout action
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: buildAndTest
+        uses: devperimental/composite-action-library/dotnet-build-and-test@v2
+        with:
+          nuget-username: ${{ env.nuget-username }}
+          src-dir: ${{ env.src-dir }}
+          coverage-threshold: ${{ env.coverage-threshold }}
+          repo-organisation: ${{ env.repo-organisation }}
+          team-pat: ${{ env.team-pat }}
