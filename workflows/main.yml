@@ -16,7 +16,7 @@ jobs:
 
     environment:
       name: 'Production'
-#      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - uses: actions/checkout@v4
