@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleService", "SimpleServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleService.Types", "SimpleService.Types\SimpleService.Types.csproj", "{5E08BB23-9AA9-4D85-8854-E0008CFD0910}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleService.Tests", "..\SimpleService.Tests\SimpleService.Tests.csproj", "{36E9FDE8-DC59-46F8-8B53-E8C072DC54B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5E08BB23-9AA9-4D85-8854-E0008CFD0910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E08BB23-9AA9-4D85-8854-E0008CFD0910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E08BB23-9AA9-4D85-8854-E0008CFD0910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36E9FDE8-DC59-46F8-8B53-E8C072DC54B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E9FDE8-DC59-46F8-8B53-E8C072DC54B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E9FDE8-DC59-46F8-8B53-E8C072DC54B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E9FDE8-DC59-46F8-8B53-E8C072DC54B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
