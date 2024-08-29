@@ -17,6 +17,8 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - uses: actions/checkout@v4
@@ -47,11 +49,17 @@ jobs:
         with:
           name: .net-app
 
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0DF854FCFB2D4820AA856B151F8EABFC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D8D9A7AE0855427FB8611F24B353A634 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F1ABD9C235E54CF8A680847FC1005A88 }}
+      
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{env.app-service-name}}
           slot-name: 'Production'
-          #publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
