@@ -9,14 +9,14 @@ on:
       - main
 env:
   src-dir: ./src/code
-  app-service-name: simple-service-2024
+  app-service-name: demo-webapp-20240830
 jobs:
   build:
     runs-on: ubuntu-latest
 
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ steps.deploy-to-webapp.outputs.0webapp-url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: ${{env.app-service-name}}
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          #publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
